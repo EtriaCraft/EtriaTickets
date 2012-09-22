@@ -14,87 +14,88 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class TicketManager {
-	
-	public static SortedMap<Integer, Ticket> tickets = new TreeMap<Integer, Ticket>();
-	
-	public static void loadTickets() {
-		tickets.clear();
-		ResultSet rs = Main.db.sql.readQuery("SELECT * from `tickets` ORDER BY `id` ASC");
-		
-		try {
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String creator = rs.getString("creator");
-				String message = rs.getString("message");
-				long timestamp = rs.getLong("timestamp");
-				String comment = rs.getString("comment");
-				String user_comment = rs.getString("user_comment");
-				World world = Bukkit.getWorld(rs.getString("world"));
-				
-				if (world == null) continue;
-				
-				Location loc = new Location(world, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
-				boolean held = rs.getBoolean("held");
-				boolean completed = rs.getBoolean("completed");
-				String assignee = rs.getString("assignee");
-				
-				Ticket ticket = new Ticket(id, creator, message, timestamp, loc, held, completed);
-				
-				if (comment != null) ticket.setComment(comment);
-				if (user_comment != null) ticket.setCreatorComment(user_comment);
-				if (assignee != null) ticket.assign(assignee);
-				
-				TicketManager.tickets.put(id, ticket);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static int createTicket(Player user, String message) {
-		String creator = user.getName();
-		long timestamp = (System.currentTimeMillis() / 1000L);
-		Location loc = user.getLocation();
-		int index;
-		
-		try {
-			PreparedStatement stmt = Main.db.conn.prepareStatement("INSERT INTO `tickets` (`creator`, `message`, `timestamp`, `world`, `x`, `y`, `z`) VALUES(?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
-			
-			// Set Arguments for Statement
-			stmt.setString(1, creator);
-			stmt.setString(1, message);
-			stmt.setLong(3, timestamp);
-			stmt.setString(4, loc.getWorld().getName());
-			stmt.setInt(5, (int) loc.getX());
-			stmt.setInt(6, (int) loc.getY());
-			stmt.setInt(7, (int) loc.getZ());
-			
-			// Execute
-			stmt.executeUpdate();
-			
-			ResultSet rs = stmt.getGeneratedKeys();
-			// Move to first row
-			rs.next();
-			index = rs.getInt(1);
-			
-			stmt.close();
-			rs.close();
-			
-			// Creates ticket, adds to memory.
-			tickets.put(index, new Ticket(index, creator, message, timestamp, loc, false, false));
-			return index;
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return -1;
-		}
-	}
-	
-	public static void assignTicket(Ticket ticket, String player) {
-		ticket.assign(player);
-		Main.db.sql.modifyQuery("UPDATE `tickets` SET `assignee` = '" + player + "' WHERE `id` = " + ticket.getId());
-	}
-	
-	public static void unassignTicket(Ticket ticket) {
+    
+    public static SortedMap<Integer, Ticket> tickets = new TreeMap<Integer, Ticket>();
+    
+    public static void loadTickets() {
+        tickets.clear();
+        ResultSet rs = Main.db.sql.readQuery("SELECT * FROM `tickets` ORDER BY `id` ASC");
+        
+        try {
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String creator = rs.getString("creator");
+                String message = rs.getString("message");
+                long timestamp = rs.getLong("timestamp");
+                String comment = rs.getString("comment");
+                String user_comment = rs.getString("user_comment");
+                World world = Bukkit.getWorld(rs.getString("world"));
+                
+                if (world == null) continue;
+                
+                Location loc = new Location(world, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
+                boolean held = rs.getBoolean("held");
+                boolean completed = rs.getBoolean("completed");
+                String assignee = rs.getString("assignee");
+                
+                Ticket ticket = new Ticket(id, creator, message, timestamp, loc, held, completed);
+                
+                if (comment != null) ticket.setComment(comment);
+                if (user_comment != null) ticket.setCreatorComment(user_comment);
+                if (assignee != null) ticket.assign(assignee);
+                
+                TicketManager.tickets.put(id, ticket);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static int createTicket(Player user, String message) {
+        String creator = user.getName();
+        long timestamp = (System.currentTimeMillis() / 1000L); //Fuck you, 2038.
+        Location loc = user.getLocation();
+        int index;
+        
+        try {
+            PreparedStatement stmt = Main.db.conn.prepareStatement("INSERT INTO `tickets` (`creator`, `message`, `timestamp`, `world`, `x`, `y`, `z`) VALUES(?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+            
+            //Set statement arguments
+            stmt.setString(1, creator);
+            stmt.setString(2, message);
+            stmt.setLong(3, timestamp);
+            stmt.setString(4, loc.getWorld().getName());
+            stmt.setInt(5, (int) loc.getX());
+            stmt.setInt(6, (int) loc.getY());
+            stmt.setInt(7, (int) loc.getZ());
+            
+            //Execute
+            stmt.executeUpdate();
+            
+            ResultSet rs = stmt.getGeneratedKeys();
+            //Move to first row & get index
+            rs.next();
+            index = rs.getInt(1);
+            
+            stmt.close();
+            rs.close();
+            
+            //Create new ticket object, add to memory
+            tickets.put(index, new Ticket(index, creator, message, timestamp, loc, false, false));
+            return index;
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    
+    public static void assignTicket(Ticket ticket, String player) {
+        ticket.assign(player);
+        Main.db.sql.modifyQuery("UPDATE `tickets` SET `assignee` = '" + player + "' WHERE `id` = " + ticket.getId());
+    }
+    
+    
+    public static void unassignTicket(Ticket ticket) {
         ticket.assign(null);
         Main.db.sql.modifyQuery("UPDATE `tickets` SET `assignee` = NULL WHERE `id` = " + ticket.getId());
     }

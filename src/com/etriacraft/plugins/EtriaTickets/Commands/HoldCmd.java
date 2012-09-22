@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class HoldCmd implements CommandExecutor {
 
@@ -31,7 +32,12 @@ public class HoldCmd implements CommandExecutor {
                 ticket.hold();
                 TicketManager.holdTicket(ticket);
                 s.sendMessage("§cTicket " + args[0] + " is now on hold");
-                Bukkit.broadcast("§eTicket #" + args[0] + " put on hold by " + s.getName(), "EtriaTickets.alerts.hold");
+                
+                for(Player player: Bukkit.getOnlinePlayers()) {
+                	if ((player.hasPermission("EtriaTickets.alerts.hold"))) {
+                		player.sendMessage("§eTicket #" + args[0] + " put on hold by " + s.getName());
+                	}
+                }
             } else {
                 s.sendMessage("§cThat ticket cannot be put on hold");
             }

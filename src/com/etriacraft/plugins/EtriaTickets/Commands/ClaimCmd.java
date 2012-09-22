@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class ClaimCmd implements CommandExecutor {
 
@@ -32,7 +33,12 @@ public class ClaimCmd implements CommandExecutor {
 			} else if (ticket.getAssignee() == null) {
 				TicketManager.assignTicket(ticket, s.getName());
 				s.sendMessage("§cYou have claimed ticket " + args[0]);
-				Bukkit.broadcast("§eTicket #" + args[0] + " claimed by " + s.getName(), "EtriaTickets.alerts.claim");
+				
+				for (Player player: Bukkit.getOnlinePlayers()) {
+					if (player.hasPermission("EtriaTickets.alerts.claim")) {
+						player.sendMessage("§eTicket #" + args[0] + "claimed by " + s.getName());
+					}
+				}
 				
 				if (Bukkit.getOfflinePlayer(ticket.getCreator()).isOnline())
 					Bukkit.getPlayer(ticket.getCreator()).sendMessage("§eTicket claimed by " + s.getName() + "; do /check " + args[0] + " for info");

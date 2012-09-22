@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class ReOpenCmd implements CommandExecutor {
 
@@ -31,7 +32,12 @@ public class ReOpenCmd implements CommandExecutor {
                 TicketManager.openTicket(ticket);
                 TicketManager.unHoldTicket(ticket);
                 s.sendMessage("§cYou have re-opened Ticket #" + args[0]);
-                Bukkit.broadcast("§eTicket #" + args[0] + " re-opened by " + s.getName(), "EtriaTickets.alerts.reopen");
+                
+                for(Player player: Bukkit.getOnlinePlayers()) {
+                	if ((player.hasPermission("EtriaTickets.alerts.reopen"))) {
+                		player.sendMessage("§eTicket #" + args[0] + " re-opened by " + s.getName());
+                	}
+                }
             } else {
                 s.sendMessage("§cThat ticket is already open");
             }

@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CloseCmd implements CommandExecutor {
 
@@ -36,8 +37,12 @@ public class CloseCmd implements CommandExecutor {
 				TicketManager.closeTicket(ticket);
 				TicketManager.unHoldTicket(ticket);
 				s.sendMessage("§cYou have closed Ticket " + args[0]);
-				Bukkit.broadcast("§eTicket #" + args[0] + " closed by " + s.getName(), "EtriaTickets.alerts.close");
 				
+				for (Player player: Bukkit.getOnlinePlayers()) {
+					if ((player.hasPermission("EtriaTickets.alerts.close"))) {
+						player.sendMessage("§eTicket #" + args[0] + " closed by " + s.getName());
+				}
+			}				
 				if (Bukkit.getOfflinePlayer(ticket.getCreator()).isOnline())
 					Bukkit.getPlayer(ticket.getCreator()).sendMessage("§eTicket closed by " + s.getName() + "; do /check " + args[0] + " for info");
 			} else {

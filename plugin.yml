@@ -66,32 +66,3 @@ permissions:
   EtriaTickets.check.own:
     description: Check tickets created by user.
     default: op
-#Parent Nodes
-  EtriaTickets.alerts.*:
-    default: op
-    description: Receive all alerts.
-    children:
-      EtriaTickets.alerts.reopen: true
-      EtriaTickets.alerts.open: ture
-      EtriaTickets.alerts.hold: true
-      EtriaTickets.alerts.comment: true
-      EtriaTickets.alerts.close: true
-      EtriaTickets.alerts.claim: true
-  EtriaTickets.mod:
-    default: op
-    description: Mod permissions
-    children:
-      EtriaTickets.check.all: true
-      EtriaTickets.claim: true
-      EtriaTickets.close: true
-      EtriaTickets.comment.mod: true
-      EtriaTickets.hold: true
-      EtriaTickets.reopen: true
-      EtriaTickets.tpid: true
-  EtriaTickets.user:
-    default: op
-    description: User permissions
-    children:
-      EtriaTickets.open: true
-      EtriaTickets.comment.own: true
-      EtriaTickets.check.own: true

@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CommentCmd implements CommandExecutor {
 
@@ -41,7 +42,11 @@ public class CommentCmd implements CommandExecutor {
                     TicketManager.setTicketComment(ticket, message, true);
                     if (Bukkit.getPlayer(ticket.getCreator()) != null)
                         Bukkit.getPlayer(ticket.getCreator()).sendMessage("§c" + s.getName() + " commented on your ticket, do /check " + args[0]);
-                    Bukkit.broadcast("§c" + s.getName() + " commented on Ticket #" + args[0], "EtriaTickets.alerts.comment");
+                    for(Player player: Bukkit.getOnlinePlayers()) {
+                    	if ((player.hasPermission("EtriaTickets.alerts.comment"))) {
+                    		player.sendMessage("§c" + s.getName() + " commented on Ticket #" + args[0]);
+                    	}
+                    }
                 }
             } else if (ticket.getCreator().equals(s.getName())){
                 if (!Utils.hasPerm(s, "EtriaTickets.comment.own")) {
