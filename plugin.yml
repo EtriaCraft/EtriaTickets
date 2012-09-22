@@ -1,0 +1,97 @@
+name: EtriaTickets
+main: com.etriacraft.plugins.EtriaTickets.Main
+version: 1.0
+author: MistPhizzle
+commands:
+  hold:
+    description: Put a ticket on hold.
+    usage: /<command> [id]
+  open:
+    description: Open a new ticket
+    usage: /<command> [message]
+    aliases: [report, modreq]
+  check:
+    description: Ticket reading commands.
+    usage: /<command> ([id|held|page]) ([id])
+    aliases: [read]
+  close:
+    description: Close a ticket.
+    usage: /<command> [id]
+  tpid:
+    description: Teleport to the location of where the ticket was filed.
+    usage: /<command> [id]
+    aliases: [goto, gototicket, tp-id]
+  comment:
+    description: Add a comment on a claimed ticket.
+    usage: /<command> [id] [message]
+    aliases: [close, resolve]
+  reopen:
+    description: Open a closed or held ticket.
+    usage: /<command> [id]
+  claim:
+    descritpion: Toggle claim status of a ticket on user.
+    usage: <command> [id]
+permissions:
+  EtriaTickets.alerts.reopen:
+    default: op
+  EtriaTickets.alerts.open:
+    default: op
+  EtriaTickets.alerts.hold:
+    default: op
+  EtriaTickets.alerts.comment:
+    default: op
+  EtriaTickets.alerts.close:
+    default: op
+  EtriaTickets.alerts.claim:
+    default: op
+  EtriaTickets.tpid:
+    default: op
+  EtriaTickets.reopen:
+    default: op
+  EtriaTickets.open:
+    default: op
+  EtriaTickets.hold:
+    default: op
+  EtriaTickets.comment.mod:
+    default: op
+  EtriaTickets.comment.own:
+    default: op
+  EtriaTickets.close:
+    default: op
+  EtriaTickets.claim:
+    default: op
+  EtriaTickets.check.all:
+    description: Check all tickets.
+    default: op
+  EtriaTickets.check.own:
+    description: Check tickets created by user.
+    default: op
+#Parent Nodes
+  EtriaTickets.alerts.*:
+    default: op
+    description: Receive all alerts.
+    children:
+      EtriaTickets.alerts.reopen: true
+      EtriaTickets.alerts.open: ture
+      EtriaTickets.alerts.hold: true
+      EtriaTickets.alerts.comment: true
+      EtriaTickets.alerts.close: true
+      EtriaTickets.alerts.claim: true
+  EtriaTickets.mod:
+    default: op
+    description: Mod permissions
+    children:
+      EtriaTickets.check.all: true
+      EtriaTickets.claim: true
+      EtriaTickets.close: true
+      EtriaTickets.comment.mod: true
+      EtriaTickets.hold: true
+      EtriaTickets.reopen: true
+      EtriaTickets.tpid: true
+  EtriaTickets.user:
+    default: op
+    description: User permissions
+    children:
+      EtriaTickets.open: true
+      EtriaTickets.comment.own: true
+      EtriaTickets.check.own: true
