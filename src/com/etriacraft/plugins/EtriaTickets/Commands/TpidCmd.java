@@ -28,7 +28,7 @@ public class TpidCmd implements CommandExecutor {
         
         if (ticket != null) {
             ((Player) s).teleport(ticket.getLocation());
-            s.sendMessage("§cSent to the location of ticket " + args[0]);
+            s.sendMessage("§eSent to the location of ticket §3" + args[0]);
         } else {
             s.sendMessage("§cTicket not found");
         }

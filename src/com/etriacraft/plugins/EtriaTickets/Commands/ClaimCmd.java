@@ -36,16 +36,16 @@ public class ClaimCmd implements CommandExecutor {
 				
 				for (Player player: Bukkit.getOnlinePlayers()) {
 					if (player.hasPermission("EtriaTickets.alerts.claim")) {
-						player.sendMessage("§eTicket #" + args[0] + "claimed by " + s.getName());
+						player.sendMessage("§eTicket # §3" + args[0] + "§eclaimed by §3" + s.getName());
 					}
 				}
 				
 				if (Bukkit.getOfflinePlayer(ticket.getCreator()).isOnline())
-					Bukkit.getPlayer(ticket.getCreator()).sendMessage("§eTicket claimed by " + s.getName() + "; do /check " + args[0] + " for info");
+					Bukkit.getPlayer(ticket.getCreator()).sendMessage("§eTicket claimed by §3" + s.getName() + "§e; do /check §3" + args[0] + "§e for info");
 			} else if (ticket.getAssignee().equals(s.getName())) {
 				TicketManager.unassignTicket(ticket);
 				s.sendMessage("§cYou have unclaimed Ticket " + args[0]);
-				Bukkit.broadcast("§eTicket #" + args[0] + " unclaimed by " + s.getName(), "EtriaTickets.alerts.claim");
+				Bukkit.broadcast("§eTicket # " + args[0] + " unclaimed by " + s.getName(), "EtriaTickets.alerts.claim");
 			} else {
 				s.sendMessage("§cThat ticket isn't claimed by you");
 			}

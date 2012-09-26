@@ -36,15 +36,15 @@ public class CloseCmd implements CommandExecutor {
 				ticket.complete();
 				TicketManager.closeTicket(ticket);
 				TicketManager.unHoldTicket(ticket);
-				s.sendMessage("§cYou have closed Ticket " + args[0]);
+				s.sendMessage("§cYou have closed Ticket §3" + args[0]);
 				
 				for (Player player: Bukkit.getOnlinePlayers()) {
 					if ((player.hasPermission("EtriaTickets.alerts.close"))) {
-						player.sendMessage("§eTicket #" + args[0] + " closed by " + s.getName());
+						player.sendMessage("§eTicket # §3" + args[0] + "§e closed by §3" + s.getName());
 				}
 			}				
 				if (Bukkit.getOfflinePlayer(ticket.getCreator()).isOnline())
-					Bukkit.getPlayer(ticket.getCreator()).sendMessage("§eTicket closed by " + s.getName() + "; do /check " + args[0] + " for info");
+					Bukkit.getPlayer(ticket.getCreator()).sendMessage("§eTicket closed by §3" + s.getName() + "§e; do /check §3" + args[0] + "§e for info");
 			} else {
 				s.sendMessage("§cThat ticket isn't open");
 			}

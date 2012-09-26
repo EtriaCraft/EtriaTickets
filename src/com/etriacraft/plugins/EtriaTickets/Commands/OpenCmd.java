@@ -25,10 +25,10 @@ public class OpenCmd implements CommandExecutor {
         
         String message = Utils.buildString(args, 0);
         int i = TicketManager.createTicket((Player) s, message);
-        s.sendMessage("§cYour Ticket ID is " + i + "; do /check " + i + " to get info on it");
+        s.sendMessage("§eYour Ticket ID is §3" + i + "§e; do /check §3" + i + "§e to get info on it");
         for(Player player: Bukkit.getOnlinePlayers()) {
         	if ((player.hasPermission("EtriaTickets.alerts.open"))) {
-        		player.sendMessage("§eA new ticket has been filed, do /check " + i + " for more info");
+        		player.sendMessage("§eA new ticket has been filed, do /check §3" + i + "§e for more info");
         	}
         }
         return true;

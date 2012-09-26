@@ -31,11 +31,11 @@ public class ReOpenCmd implements CommandExecutor {
             if (!ticket.isOpen()) {
                 TicketManager.openTicket(ticket);
                 TicketManager.unHoldTicket(ticket);
-                s.sendMessage("§cYou have re-opened Ticket #" + args[0]);
+                s.sendMessage("§eYou have re-opened Ticket # §3" + args[0]);
                 
                 for(Player player: Bukkit.getOnlinePlayers()) {
                 	if ((player.hasPermission("EtriaTickets.alerts.reopen"))) {
-                		player.sendMessage("§eTicket #" + args[0] + " re-opened by " + s.getName());
+                		player.sendMessage("§eTicket # §3" + args[0] + "§e re-opened by §3" + s.getName());
                 	}
                 }
             } else {

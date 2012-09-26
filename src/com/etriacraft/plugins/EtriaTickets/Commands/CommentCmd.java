@@ -35,16 +35,16 @@ public class CommentCmd implements CommandExecutor {
                     }
 
                     if (ticket.getComment() == null) {
-                        s.sendMessage("§cYou have added a comment on Ticket " + args[0]);
+                        s.sendMessage("§cYou have added a comment on Ticket §3" + args[0]);
                     } else {
-                        s.sendMessage("§cYou have updated the comment on Ticket " + args[0]);
+                        s.sendMessage("§cYou have updated the comment on Ticket §3" + args[0]);
                     }
                     TicketManager.setTicketComment(ticket, message, true);
                     if (Bukkit.getPlayer(ticket.getCreator()) != null)
-                        Bukkit.getPlayer(ticket.getCreator()).sendMessage("§c" + s.getName() + " commented on your ticket, do /check " + args[0]);
+                        Bukkit.getPlayer(ticket.getCreator()).sendMessage("§3" + s.getName() + "§e commented on your ticket, do /check " + args[0]);
                     for(Player player: Bukkit.getOnlinePlayers()) {
                     	if ((player.hasPermission("EtriaTickets.alerts.comment"))) {
-                    		player.sendMessage("§c" + s.getName() + " commented on Ticket #" + args[0]);
+                    		player.sendMessage("§3" + s.getName() + "§e commented on Ticket # §3" + args[0]);
                     	}
                     }
                 }
@@ -53,12 +53,12 @@ public class CommentCmd implements CommandExecutor {
                     Utils.noPermMessage(s);
                 } else {
                     if (ticket.getCreatorComment() == null) {
-                        s.sendMessage("§cYou have added a comment on Ticket " + args[0]);
+                        s.sendMessage("§eYou have added a comment on Ticket §3" + args[0]);
                     } else {
-                        s.sendMessage("§cYou have updated the comment on Ticket " + args[0]);
+                        s.sendMessage("§eYou have updated the comment on Ticket §3" + args[0]);
                     }
                     TicketManager.setTicketComment(ticket, message, false);
-                    Bukkit.broadcast("§c" + s.getName() + " has commented on their ticket, do /check " + args[0], "EtriaTickets.alerts.comment");
+                    Bukkit.broadcast("§3" + s.getName() + "§e has commented on their ticket, do /check §3" + args[0], "EtriaTickets.alerts.comment");
                 }
             } else {
                 s.sendMessage("§cYou're not allowed to comment on this ticket");
