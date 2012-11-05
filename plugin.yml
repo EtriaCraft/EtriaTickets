@@ -9,7 +9,7 @@ commands:
   open:
     description: Open a new ticket
     usage: /<command> [message]
-    aliases: [report, modreq]
+    aliases: [report, modreq, ticket, complain]
   check:
     description: Ticket reading commands.
     usage: /<command> ([id|held|page]) ([id])
